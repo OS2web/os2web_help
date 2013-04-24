@@ -1,0 +1,57 @@
+<?php
+/**
+ * @file
+ * os2web_help.module
+ */
+
+/**
+ * Implements hook_help().
+ */
+function os2web_help_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#os2web_help':
+      $help_html = t('<p><b>This help page describes all relevant OS2web modules and their functionality.</b></p>');
+      $global = array();
+
+      $global['list_of_content'] = t('<a href="#os2web_create">Create content</a><br />');
+      $global['list_of_content'] .= t('<a href="#os2web_fields">Specific Fields</a><br />');
+      $global['list_of_content'] .= t('<a href="#os2web_import">Import</a><br />');
+      $global['list_of_content'] .= t('<a href="#os2web_menu">Menues</a><br />');
+      $global['list_of_content'] .= t('<a href="#os2web_config">Configuration</a><br />');
+
+      $global['contenttype'] = t('<h2 id="os2web_create">Create content on your site:</h2>');
+      $global['contenttype'] .= t('<p>Any type of content on your site, can be created <a href="@node-add-url" target="_blank">as a contenttype</a></p>', array('@node-add-url' => url('node/add')));
+
+      $global['fields'] = t('<h2 id="os2web_fields">Specific fields in content:</h2>');
+
+      $global['import'] = t('<h2 id="os2web_import">Import external content and taxonomies</h2>');
+      $global['import'] .= t('<p>Initialize any type of importer <a href="@url">the import page.</a></p>', array('@url' => 'import'));
+
+      $global['menu'] = t('<h2 id="os2web_menu">Menues</h2>');
+      $global['menu'] .= t('<p>Create or edit a link in a menu in the <a href="@node-add-menu" target="_blank">menu overview</a></p>', array('@node-add-menu' => url('admin/structure/menu')));
+
+      $global['configuration'] = t('<h2 id="os2web_config">Configuration</h2>');
+      $global['configuration'] .= t('<p>Many of the OS2web modules has configurations which has to be set, in order for every functionality works as designed. See more at the <a href="@settings-url" target="_blank">OS2web configuration page</a></p>', array('@settings-url' => url('admin/config/os2web/settings')));
+
+      // Add os2web_help hook in modules. MY_MODULE_os2web_help().
+      // The hook implementation should return the html
+      // in the given section of an array.
+      $modules = module_invoke_all('os2web_help', array());
+      // Print all sections.
+      $sections = array_merge_recursive($global, $modules);
+      foreach ($sections as $help) {
+        if (!empty($help)) {
+          if (is_array($help)) {
+            foreach ($help as $help_element) {
+              $help_html .= $help_element;
+            }
+          }
+          else {
+            $help_html .= $help;
+          }
+          $help_html .= t('<hr>');
+        }
+      }
+      return $help_html;
+  }
+}
