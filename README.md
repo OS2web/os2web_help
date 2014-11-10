@@ -1,3 +1,9 @@
+Deprecated
+==========
+This repository is deprecated, and may be deleted.
+
+Use <https://github.com/OS2WebCore/os2web_help>
+
 OS2Web Help
 ==============================
 
